@@ -1,0 +1,132 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+class nextday{
+    int days,months,years;
+public:
+    nextday(){
+        days=0;
+        months=0;
+        years=0;
+    }
+    void input(){
+        int count1,count2,count3,count4,count5;
+        count1=0;
+        count2=0;
+        count3=0;
+        count4=0;
+        count5=0;
+        cin >> days >> months >> years;
+        days=abs(days);
+        months=abs(months);
+        years=abs(years);
+        while(months>12){
+            months-=12;
+        ++count5;
+        }
+        year+=count5;
+        if (months==1||months==3||months==5||months==7||months==8||months==10||months==12){
+            while(days>31){
+                days-=31;
+            }
+        }
+        if(months==4||months==6||months==9||months==11){
+            while(days>30){
+                days-=30;
+                ++count1;
+            }
+        }
+        if(months==2&&years&4==0){
+            while(days>29){
+                days-=29;
+            }
+        }
+        if(months==2&&years&4!=0){
+            while(days>28){
+                days-=28;
+            }
+        }
+        length(days,months,years);
+    }
+        void length(int &a, int &b ,int &c){
+            int n;
+            int m,k;
+            int d2,m2,y2;
+            do{
+                cin >> n;
+                if(n==1){
+                    cin >> m;
+                    a+=m;
+                }else if(n==2){
+                    cin >>k;
+                    a-=k;
+                }else if(n==3){
+                    cin >> d2>>m2>> y2;
+                }else 
+                continue;
+            }while(n!=3);
+            output(a,b,c,d2,m2,y2);
+        }
+        void output(int a,int b,int c,int d,int f,int g){
+            int c1,g1;
+            c1=c;
+            g1=g;
+            int res;
+            int res2;
+            res2=0;
+            res=0;
+            int res3;
+            res3=0;
+            c=abs(g-c);
+            g=c;
+            while(c!=0){
+                if(c%4==0){
+                    res+=366;
+                }
+                if(c%4!=0){
+                    res+=365;
+                }
+            --c;
+            }
+            res+=a;
+            while(b!=0){
+                b-=1;
+                if (b==1||b==3||b==5||b==7||b==8||b==10||b==12){
+                    res+=31;
+            }else if(b==4||b==6||b==9||b==11){res+=30;}
+            else if(b==2&&c1%4==0){res+=29;}
+            else if(b==2&&c1%4!=0){res+=28;}
+            else break;
+        }
+          
+        while(g!=0){
+                if(g%4==0){
+                    res2+=366;
+                }
+                if(g%4!=0){
+                    res2+=365;
+                }
+            --g;
+            }
+            res2+=d;
+            while(f!=0){
+                f-=1;
+                if (f==1||f==3||f==5||f==7||f==8||f==10||f==12){
+                    res2+=31;
+            }else if(f==4||f==6||f==9||f==11){res2+=30;}
+            else if(f==2&&g1%4==0){res2+=29;}
+            else if(f==2&&g1%4!=0){res2+=28;}
+            else break;
+        }
+          
+        res3=abs(res2-res);
+        cout << res3;
+        }
+};
+
+
+
+int main(){
+    nextday d1;
+    d1.input();
+}
