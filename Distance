@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string.h>
+#include <cmath>
+using namespace std;
+
+class Point{
+    float x,y;
+public:
+    Point(){
+        cout << "Point()";
+        x=0;
+        y=0;
+    }
+    
+    oint(float xx, float yy){
+        cout<<"Point(xx,yy)"<<endl;
+        x=xx;
+        y=yy;
+    }
+    void print(){
+        cout<<"("<<x<<","<<y<<")"<<endl;
+    }
+    friend float distance(Point A,Point B);
+};
+inline float square(float A){
+    return A*A;
+}
+float distance(Point A,Point B){
+    return sqrt(square(A.x-B.x)+square(A.y-B.y));
+}
+class Clineseg{
+    Point A,B;
+    public:
+    Clineseg(float xA, float xB, float yA, float yB): A(xA,yA),B(xB,yB){
+
+    }
+    float length(){
+        return sqrt(square(A.x-B.x)+)
+    }
+};
+
+int main(){
+    Point A(1,0);
+    Point B(2,3);
+    cout<<"Distance: "<<distance(A,B)<<endl;
+}
