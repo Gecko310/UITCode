@@ -1,0 +1,134 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+class dathuc{
+    int n;
+    vector<int> hs;
+public:
+    void set(int x){
+        n = abs(x);
+        for(int i=0; i<=n; i++){
+            hs.push_back(0);
+        }
+    }
+    void set(){
+        cin >> n;
+        n = abs(n);
+        for(int i=0; i<=n; i++){
+            int x; cin >> x;
+            hs.push_back(x);
+        }
+    }
+    void print(){
+        for(int i=0; i<=n; i++){
+            if(hs[i] == 0){
+                continue;
+            }
+            if(i==0){
+                cout << hs[i] << "x^" << i;
+            }
+            else{
+                if(hs[i] >= 0){
+                    cout << "+" << hs[i] << "x^" << i;
+                }
+                else cout <<  hs[i] << "x^" << i;
+            }
+        }
+    }
+    friend dathuc operator + (dathuc x, dathuc y){
+        dathuc tmp;
+        if(x.n > y.n){
+            tmp.n = x.n;
+            for(int i=0; i<=y.n; i++){
+                tmp.hs.push_back(x.hs.at(i) + y.hs.at(i));
+            }
+            for(int i=y.n+1; i<=x.n; i++){
+                tmp.hs.push_back(x.hs.at(i));
+            }
+        }
+        else{
+            tmp.n = y.n;
+            for(int i=0; i<=x.n; i++){
+                tmp.hs.push_back(x.hs.at(i) + y.hs.at(i));
+            }
+            for(int i=x.n+1; i<=y.n; i++){
+                tmp.hs.push_back(y.hs.at(i));
+            }
+        }
+        return tmp;
+    }
+    friend dathuc operator-(dathuc x, dathuc y){
+        dathuc tmp;
+        if(x.n > y.n){
+            tmp.n = x.n;
+            for(int i=0; i<=y.n; i++){
+                tmp.hs.push_back(x.hs.at(i) - y.hs.at(i));
+            }
+            for(int i=y.n+1; i<=x.n; i++){
+                tmp.hs.push_back(x.hs.at(i));
+            }
+        }
+        else{
+            tmp.n = y.n;
+            for(int i=0; i<=x.n; i++){
+                tmp.hs.push_back(x.hs.at(i) - y.hs.at(i));
+            }
+            for(int i=x.n+1; i<=y.n; i++){
+                tmp.hs.push_back(-y.hs.at(i));
+            }
+        }
+        return tmp;
+    }
+    friend dathuc operator*(dathuc x, dathuc y){
+        dathuc res;
+        res.n = x.n + y.n;
+        res.set(res.n);
+        for(int i=0; i<=x.n; i++){
+            for(int j=0;j<=y.n;j++){
+                int mu;
+                mu = i + j;
+                res.hs.at(mu) += x.hs.at(i) * y.hs.at(j); 
+            }
+        }
+        return res;
+    }
+    friend dathuc operator/(dathuc x, dathuc y){
+        dathuc res;
+        res.n = x.n - y.n;
+        res.set(res.n);
+        dathuc tmp = x;
+        int cnt = 0;
+        while(cnt - 1 != res.n){
+            int k = x.n-cnt;
+            res.hs.at(k - y.n) += tmp.hs.at(k) / y.hs.at(y.n);
+            tmp.n -= -1;
+            if(tmp.n < y.n) break;
+            tmp = x - res * y;
+            cnt++;
+        }
+        return res;
+    }
+};
+
+int main() {  
+    dathuc x;
+    x.set();
+    dathuc y;
+    y.set();
+    char d; 
+    cin.ignore();
+    cin >> d;
+    switch(d){
+        case '+': x = x + y; break;
+        case '-': x = x - y; break;
+        case '*': x = x * y; break;
+        default: x = x / y;
+    }
+    x.print();
+    
+    return 0;
+}
