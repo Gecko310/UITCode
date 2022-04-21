@@ -1,0 +1,92 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+class watch{
+    int hours,mins,secs;
+public:
+    
+    void input(){
+        int count=0;
+        int count2=0;
+        cin >> hours >> mins >> secs;
+        hours = abs(hours);
+        mins = abs(mins);
+        secs = abs(secs);
+        while(hours>24)
+        {
+            hours=hours%24;
+        }
+        while(mins>60)
+        {
+            mins=mins%60;
+            ++count2;
+        }
+        while(secs>60)
+        {
+            secs=secs%60;
+            ++count;
+        }
+        mins+=count;
+        hours+=count2;
+        int n,t;
+        while(n!=-1){
+            cin >> n;
+            switch (n){
+                case 1:
+                secs+=1;
+                break;
+                case 2:
+                secs-=1;
+                break;
+                case 3:
+                cin >> t;
+                secs+=t;
+                break;
+                case 4:
+                cin >> t;
+                secs-=t;
+                break;
+                case -1:
+                break;
+            }
+        }
+    }
+    void output(){
+        int count = 0;
+        int count2=0;
+        while(secs<0){
+            secs+=60;
+            --count;
+        }
+        while(secs>=60){
+            secs-=60;
+            ++count;
+        }
+        mins +=count;
+        while(mins<0){
+            mins+=60;
+            --count2;
+        }
+        while (mins>=60){
+            mins-=60;
+            ++count2;
+        }
+        hours+=count2;
+        while (hours<0){
+            hours+=24;
+        }
+        while (hours>=24){
+            hours-=24;
+        }
+        cout << hours <<"h "<< mins << "p "<< secs<<"s";
+        }
+    }
+};
+
+
+
+int main(){
+    watch a;
+    a.input();
+    a.output();
+}
