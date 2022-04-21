@@ -1,0 +1,99 @@
+#include <cmath>
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Time{
+    int s, m ,h;
+public:
+    Time(int x){
+        set(0,0,x);
+    }
+    Time(){
+        set(0,0,0);
+    }
+    Time(int hh, int mm, int ss){
+        set(hh,mm,ss);
+    }
+    void set(int hh, int mm, int ss){
+        h = abs(hh);
+        m = abs(mm);
+        s = abs(ss);
+    }
+    void set(){
+        cin >> h >> m >> s;
+        h = abs(h);
+        m = abs(m);
+        s = abs(s);
+    }
+    void print(){
+        cout << h << " " << m << " " << s << " ";
+    }
+    void overload(){
+        s = s + m * 60 + h * 3600;
+        if(s<0){
+            s += 86400;
+        }
+        h = s / 3600;
+        m = s % 3600 / 60;
+        s = s - h * 3600 - m * 60;
+        h = h % 24;
+    }
+    friend Time operator ++ (Time &cl){
+        cl.s++;
+        return cl;
+    }
+    friend Time operator -- (Time &cl){
+        cl.s--;
+        return cl;
+    }
+    friend Time operator + (Time x, Time y){
+        Time tmp;
+        tmp.h = x.h + y.h;
+        tmp.m = x.m + y.m;
+        tmp.s = x.s + y.s;
+        return tmp;
+    }
+    friend Time operator - (Time x, Time y){
+        Time tmp;
+        tmp.h = x.h - y.h;
+        tmp.m = x.m - y.m;
+        tmp.s = x.s - y.s;
+        return tmp;
+    }    
+};
+
+int main(){
+    string s;
+    Time A;
+    A.set();
+    int n;
+    cin >> n;
+    int num;
+    while(n){
+        --n;
+        cin.ignore();
+        cin >> s;
+        if(s.length() == 1){
+            cin >> num;
+            Time tmp(num);
+            if(s.compare("+") == 0){
+                A = A + tmp;
+            }
+            else if(s.compare("-") == 0){
+                A = A - tmp;
+            }
+        }
+        else if(s.compare("++") == 0){
+            ++A;
+        }
+        else if(s.compare("--") == 0){
+            --A;
+        }
+        continue;
+    }
+    A.overload();
+    A.print();
+
+    return 0;
+}
