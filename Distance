@@ -12,7 +12,7 @@ public:
         y=0;
     }
     
-    oint(float xx, float yy){
+    Point(float xx, float yy){
         cout<<"Point(xx,yy)"<<endl;
         x=xx;
         y=yy;
