@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cmath>
+#include <string.h>
+#include <stack>
+using namespace std;
+int main(){
+   stack<int> st1;
+    stack<int> maxstack_1;
+int n,o,m;
+cin >> n;
+
+for( auto i = 0; i < n;i++ )
+{
+    cin >> o;
+
+    switch(o)
+    {
+        case 1:
+            cin >> m;
+            if(st1.empty())
+            {
+                st1.push(m);
+                maxstack_1.push(m);
+            }
+            else{
+                if(m > maxstack_1.top())
+                {
+                    maxstack_1.push(m);
+                }else
+                {
+                    maxstack_1.push(maxstack_1.top());
+                }
+                st1.push(m);
+            }
+            break;
+        case 2:
+            if(!st1.empty())
+            {
+                st1.pop();
+                maxstack_1.pop();
+            }
+
+            break;
+        case 3:
+            cout << maxstack_1.top() << endl;
+        default:
+            break;
+    }
+}
+}
