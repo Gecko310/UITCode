@@ -1,128 +1,251 @@
-//
-//  main.cpp
-//  Huffman
-//
-//  Created by Vatsal Chanana
-
-#include<bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
-typedef struct node {
-    int freq;
-    char data;
-    node * left;
-    node * right;
-} node;
+ 
 
-struct deref:public binary_function<node*, node*, bool> {
-  	bool operator()(const node * a, const node * b)const {
-        return a->freq > b->freq;
+class CPlayingCard
+{
+    int suite, rank; 
+public: 
+    CPlayingCard()
+    {
+        suite = 0;
+        rank = 0;
+    }
+    CPlayingCard(int s, int r):CPlayingCard()
+    {
+        set(s, r);
+    }
+    void set(int s, int r)
+    {
+        suite = s;
+        rank = r;
+    }
+
+ 
+
+    friend ostream& operator<<(ostream& out, CPlayingCard& card);
+
+ 
+
+    int getPoint()
+    {
+        if (rank <= 10) return rank;
+        else return 10;
     }
 };
 
-typedef priority_queue<node *, vector<node*>, deref> spq;
+ 
 
-node * huffman_hidden(string s) {
+ostream& operator<<(ostream& out, CPlayingCard& card)
+{
+    switch (card.rank)
+    {
+    case 1: out << "Ace"; break;
+    case 2: out << "Two"; break;
+    case 3: out << "Three"; break;
+    case 4: out << "Four"; break;
+    case 5: out << "Five"; break;
+    case 6: out << "Six"; break;
+    case 7: out << "Seven"; break;
+    case 8: out << "Eight"; break;
+    case 9: out << "Nine"; break;
+    case 10: out << "Ten"; break;
+    case 11: out << "Jack"; break;
+    case 12: out << "Queen"; break;
+    case 13: out << "King"; break;
+    }
 
-    spq pq;
-    vector<int>count(256,0);
-  
-    for(int i = 0; i < s.length(); i++ ) {
-        count[s[i]]++;
+ 
+
+    cout << " of ";
+
+ 
+
+    switch (card.suite)
+    {
+    case 1: out << "Heart"; break;
+    case 2: out << "Diamond"; break;
+    case 3: out << "Club"; break;
+    case 4: out << "Spade"; break;
     }
-    
-    for(int i=0; i < 256; i++) {
-        
-        node * n_node = new node;
-        n_node->left = NULL;
-        n_node->right = NULL;
-        n_node->data = (char)i;
-        n_node->freq = count[i];
-      
-        if( count[i] != 0 )
-        	pq.push(n_node);
-      
-    }
-    
-    while( pq.size() != 1 ) {
-      
-        node * left = pq.top();
-        pq.pop();
-        node * right = pq.top();
-        pq.pop();
-        node * comb = new node;
-        comb->freq = left->freq + right->freq;
-        comb->data = '\0';
-        comb->left = left;
-        comb->right = right;
-        pq.push(comb);
-      
-    }
-    
-    return pq.top();
-    
+
+ 
+
+    return out;
 }
 
-void print_codes_hidden(node * root, string code, map<char, string>&mp) {
-    
-  	if(root == NULL)
-        return;
-    
-  	if(root->data != '\0') {
-        mp[root->data] = code;
+ 
+
+class CPlayingDeck
+{
+    CPlayingCard cards[52];
+    int count;
+public: 
+    CPlayingDeck()
+    {
+        srand(time(NULL));
+        count = 52;
+        int i = 0;
+        for (int s = 1; s <= 4; s++)
+            for (int r = 1; r <= 13; r++)
+            {
+                cards[i].set(s, r);
+                i++;
+            }
     }
-  
-    print_codes_hidden(root->left, code+'0', mp);
-    print_codes_hidden(root->right, code+'1', mp);
-        
-        
+
+ 
+
+    friend ostream& operator<<(ostream& out, CPlayingDeck& deck);
+
+ 
+
+    CPlayingCard drawRandom()
+    {
+        int i = rand() % count;
+        CPlayingCard c = cards[i];
+
+ 
+
+        for (int ii = i; ii < count - 1; ii++)
+            cards[ii] = cards[ii + 1];
+        count--;
+
+ 
+
+        return c;
+    }
+};
+
+ 
+
+ostream& operator<<(ostream& out, CPlayingDeck& deck)
+{
+    for (int i = 0; i < deck.count; i++)
+    {
+        out << deck.cards[i] << endl;
+    }
+
+ 
+
+    return out;
 }
-/* 
-The structure of the node is
 
-typedef struct node {
+ 
 
-	int freq;
-    char data;
-    node * left;
-    node * right;
-    
-} node;
+class CPlayer
+{
+    CPlayingCard cards[5];
+    int count;
+public: 
+    CPlayer() { count = 0; }
+    void drawInitialHand(CPlayingDeck& deck)
+    {
+        count = 2;
+        cards[0] = deck.drawRandom();
+        cards[1] = deck.drawRandom();
+    }
 
-*/
+ 
+
+    void draw(CPlayingDeck& deck)
+    {
+        cards[count] = deck.drawRandom();
+        count++;
+    }
+
+ 
 
 
-void decode_huff(node * root, string s) {
-    node* temp= root;
-    for (int i=0;i<s.length();i++){
-        if(s[i]=='1'){
-            root=root->right;
-        }else 
-            root=root->left;
-        if(root->left==NULL && root->right==NULL) {
-            cout << root->data;
-            root=temp;
+    friend ostream& operator<<(ostream& out, CPlayer& player);
+
+ 
+
+    int getScore()
+    {
+        int score = 0;
+        for (int i = 0; i < count; i++)
+            score += cards[i].getPoint();
+        return score;
+    }
+
+ 
+
+    int getCount() { return count; }
+};
+
+ 
+
+ostream& operator<<(ostream& out, CPlayer& player)
+{
+    for (int i = 0; i < player.count; i++)
+        out << player.cards[i] << endl;
+    return out;
+}
+
+ 
+
+int main(int)
+{
+    CPlayingDeck d;
+
+ 
+
+    CPlayer players[10];
+    int n;
+    cout << "Number of player?"; cin >> n;
+
+ 
+
+    for (int i = 1; i <= n; i++)
+    {
+        players[i].drawInitialHand(d);
+        cout << "Player " << i << " initial hand:" << endl << players[i];
+        cout << "    Score: " << players[i].getScore() << endl;
+    }
+
+ 
+
+    for (int i = 1; i <= n; i++)
+    {
+        while (players[i].getScore()<16 && players[i].getCount()<=5)
+            players[i].draw(d);
+
+ 
+
+        cout << "Player " << i << ":" << endl << players[i];
+        cout << "    Score: " << players[i].getScore() << endl;
+
+ 
+
+        if (players[i].getCount() <= 5)
+        {
+            int draw = 1;
+
+ 
+
+            while (players[i].getScore() >= 16 && players[i].getScore() < 21 && draw)
+            {
+                cout << "Wanna draw more? "; cin >> draw;
+                if (draw)
+                {
+                    players[i].draw(d);
+                    cout << "Player " << i << ":" << endl << players[i];
+                    cout << "    Score: " << players[i].getScore() << endl;
+                }
+            }
         }
-    }
-}
-int main() {
-  
-    string s;
-    std::cin >> s;
-  
-    node * tree = huffman_hidden(s);
-    string code = "";
-    map<char, string>mp;
-  
-    print_codes_hidden(tree, code, mp);
-    
-    string coded;
-  
-    for( int i = 0; i < s.length(); i++ ) {
-        coded += mp[s[i]];
-    }
-    
-    decode_huff(tree,coded);
-  
-    return 0;
+
+ 
+
+
+    } // for 
+
+ 
+
+    cout << "Remaining deck" << endl << d;
+
+ 
+
 }
