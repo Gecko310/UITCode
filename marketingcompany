@@ -1,0 +1,105 @@
+//input: enter n
+//loop i<n
+// enter type of staff
+// type =1 = worker then enter in order name, salary , quantity of goods 
+// type =2= officer then enter in order days of working
+// type =3= boss 
+// input: 
+4
+1 nvquenA 2000 10
+1 nvquenB 3000 20
+2 nvquenC 40
+3 sep
+// output:
+nvquenA: 2050 (salary + goods*5)
+nvquenB: 3100 (salary + goods*5)
+nvquenC: 4000 (days * 100)
+sep: 1760(100+ totalofgoodsofworker*2+totaldaysofworking'sofficer*40)
+
+
+
+
+
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+class congtydacap{
+    int sanpham[100];
+    int tongsanpham;
+    string worker,officer,manager;
+    float luong;
+    int i,j;
+    int days;
+    public:
+    congtydacap(){
+        tongsanpham=0;
+        luong=0;
+        days=0;
+        i=0;
+        j=0;
+    }
+    void in1(int sanpham[100],int &tongsanpham,int &days,int &i){
+        cin>> worker;
+        cin >> luong >> sanpham[i];
+        tongsanpham+=sanpham[i];
+    
+    }
+    void in2(int sanpham[100],int &tongsanpham,int &days,int &i){
+        
+        cin >> officer;
+        cin >>  days;
+    }
+    void in3(int sanpham[100],int &tongsanpham,int &days,int &i){
+        cin >> manager;
+    }
+    void out1(int sanpham[100],int &tongsanpham,int &days,int &j){
+        cout << worker << ": "<< luong + sanpham[j]*5<<endl;
+        
+    }
+    void out2(int sanpham[100],int &tongsanpham,int &days,int &j){
+        cout << officer << ": "<< days*100<<endl; 
+    }
+    void out3(int sanpham[100],int &tongsanpham,int &days,int &j){
+        cout << manager << ": "<< 100 + tongsanpham*2 + days * 40; 
+    }
+};
+
+int main() {
+    congtydacap s1[100];
+    int a[100];
+    int tongsanpham;
+    int type,n;
+    int sanpham[100];
+    string worker,officer,manager;
+    float luong;
+    int days;
+    cin >> n;
+    for (int i=0;i<n;i++){
+        cin >> type;
+        if (type == 1)
+        {
+            a[i]=1;
+            s1[i].in1(sanpham,tongsanpham,days,i);
+        }else if(type==2){
+            a[i]=2;
+            s1[i].in2(sanpham,tongsanpham,days,i);
+        }else if(type ==3){
+            a[i]=3;
+            s1[i].in3(sanpham,tongsanpham,days,i);
+        }
+    }
+    for (int j=0;j<n;j++){
+        if (a[j]==1)
+        {
+            s1[j].out1(sanpham,tongsanpham,days,j);
+        }else if(a[j]==2){
+            s1[j].out2(sanpham,tongsanpham,days,j);
+        }else if(a[j]==3){
+            s1[j].out3(sanpham,tongsanpham,days,j);
+        }
+    }
+    return 0;
+}
