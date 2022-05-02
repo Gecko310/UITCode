@@ -1,71 +1,251 @@
 #include <iostream>
-#include <string.h>
-
 using namespace std;
-class CdPlayingCard{
-    int suite,rank;
-public:
-    CdPlayingCard(){
-        suite=0;
-        rank=0;
+
+ 
+
+class CPlayingCard
+{
+    int suite, rank; 
+public: 
+    CPlayingCard()
+    {
+        suite = 0;
+        rank = 0;
     }
-    CdPlayingCard(int x,int y){
-        suite = x;
-        rank = y;
+    CPlayingCard(int s, int r):CPlayingCard()
+    {
+        set(s, r);
     }
-    void set(){
-        suite = 1;
-        rank = 1;
+    void set(int s, int r)
+    {
+        suite = s;
+        rank = r;
     }
-    void print(){
-        string n,m;
-        if(rank == 1){m="Ace";}
-        if(rank == 11){m="Jack";}
-        if(rank == 12){m="Queen";}
-        if(rank == 13){m="King";}
-        cout << m<<" of ";
-        if(suite == 1){n="Heart";}
-        if(suite == 2){n="Diamond";}
-        if(suite == 3){n="Club";}
-        if(suite == 4){n="Spade";}
-        cout << n << endl;
+
+ 
+
+    friend ostream& operator<<(ostream& out, CPlayingCard& card);
+
+ 
+
+    int getPoint()
+    {
+        if (rank <= 10) return rank;
+        else return 10;
     }
 };
-class CDPlayingDesk{
-    CdPlayingCard card[52];
-    int tong=0;
-public:
-    CDPlayingDesk(){
-        int i=0;
-        for (int suite=1;suite<=4;suite++){
-            for(int rank =1; rank <=13;rank ++){
-                card[i].set(suite,rank);
+
+ 
+
+ostream& operator<<(ostream& out, CPlayingCard& card)
+{
+    switch (card.rank)
+    {
+    case 1: out << "Ace"; break;
+    case 2: out << "Two"; break;
+    case 3: out << "Three"; break;
+    case 4: out << "Four"; break;
+    case 5: out << "Five"; break;
+    case 6: out << "Six"; break;
+    case 7: out << "Seven"; break;
+    case 8: out << "Eight"; break;
+    case 9: out << "Nine"; break;
+    case 10: out << "Ten"; break;
+    case 11: out << "Jack"; break;
+    case 12: out << "Queen"; break;
+    case 13: out << "King"; break;
+    }
+
+ 
+
+    cout << " of ";
+
+ 
+
+    switch (card.suite)
+    {
+    case 1: out << "Heart"; break;
+    case 2: out << "Diamond"; break;
+    case 3: out << "Club"; break;
+    case 4: out << "Spade"; break;
+    }
+
+ 
+
+    return out;
+}
+
+ 
+
+class CPlayingDeck
+{
+    CPlayingCard cards[52];
+    int count;
+public: 
+    CPlayingDeck()
+    {
+        srand(time(NULL));
+        count = 52;
+        int i = 0;
+        for (int s = 1; s <= 4; s++)
+            for (int r = 1; r <= 13; r++)
+            {
+                cards[i].set(s, r);
                 i++;
             }
-        }
-        tong= 52;
     }
-    void print(){
-        for(int i=0;i<52;i++){
-            cout << card[i].print();
-        }
-    }
-    CDplayingCard drawRandom(){
-        srand(time(NULL));
-        int i = rand()%tong;
-        CDPlayingCard card= cards[i];
-        for (int ii=i;ii<count-1;ii++){
-            card[ii]=cards[ii+1];
-        }
-        count --;
-        return card;
+
+ 
+
+    friend ostream& operator<<(ostream& out, CPlayingDeck& deck);
+
+ 
+
+    CPlayingCard drawRandom()
+    {
+        int i = rand() % count;
+        CPlayingCard c = cards[i];
+
+ 
+
+        for (int ii = i; ii < count - 1; ii++)
+            cards[ii] = cards[ii + 1];
+        count--;
+
+ 
+
+        return c;
     }
 };
-int main(){
-    CdPlayingCard c1(2,11);
-    c1.print();
-    CdPlayingCard c2(3,1);
-    c2.print();
-    CDPlayingDesk c3;
-    c3.print();
+
+ 
+
+ostream& operator<<(ostream& out, CPlayingDeck& deck)
+{
+    for (int i = 0; i < deck.count; i++)
+    {
+        out << deck.cards[i] << endl;
+    }
+
+ 
+
+    return out;
+}
+
+ 
+
+class CPlayer
+{
+    CPlayingCard cards[5];
+    int count;
+public: 
+    CPlayer() { count = 0; }
+    void drawInitialHand(CPlayingDeck& deck)
+    {
+        count = 2;
+        cards[0] = deck.drawRandom();
+        cards[1] = deck.drawRandom();
+    }
+
+ 
+
+    void draw(CPlayingDeck& deck)
+    {
+        cards[count] = deck.drawRandom();
+        count++;
+    }
+
+ 
+
+
+    friend ostream& operator<<(ostream& out, CPlayer& player);
+
+ 
+
+    int getScore()
+    {
+        int score = 0;
+        for (int i = 0; i < count; i++)
+            score += cards[i].getPoint();
+        return score;
+    }
+
+ 
+
+    int getCount() { return count; }
+};
+
+ 
+
+ostream& operator<<(ostream& out, CPlayer& player)
+{
+    for (int i = 0; i < player.count; i++)
+        out << player.cards[i] << endl;
+    return out;
+}
+
+ 
+
+int main(int)
+{
+    CPlayingDeck d;
+
+ 
+
+    CPlayer players[10];
+    int n;
+    cout << "Number of player?"; cin >> n;
+
+ 
+
+    for (int i = 1; i <= n; i++)
+    {
+        players[i].drawInitialHand(d);
+        cout << "Player " << i << " initial hand:" << endl << players[i];
+        cout << "    Score: " << players[i].getScore() << endl;
+    }
+
+ 
+
+    for (int i = 1; i <= n; i++)
+    {
+        while (players[i].getScore()<16 && players[i].getCount()<=5)
+            players[i].draw(d);
+
+ 
+
+        cout << "Player " << i << ":" << endl << players[i];
+        cout << "    Score: " << players[i].getScore() << endl;
+
+ 
+
+        if (players[i].getCount() <= 5)
+        {
+            int draw = 1;
+
+ 
+
+            while (players[i].getScore() >= 16 && players[i].getScore() < 21 && draw)
+            {
+                cout << "Wanna draw more? "; cin >> draw;
+                if (draw)
+                {
+                    players[i].draw(d);
+                    cout << "Player " << i << ":" << endl << players[i];
+                    cout << "    Score: " << players[i].getScore() << endl;
+                }
+            }
+        }
+
+ 
+
+
+    } // for 
+
+ 
+
+    cout << "Remaining deck" << endl << d;
+
+ 
+
 }
