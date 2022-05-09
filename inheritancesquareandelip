@@ -1,0 +1,142 @@
+#include <iostream>
+#include<string.h>
+#include<vector>
+#include<cmath>
+using namespace std;
+// class CSquare{
+// protected:
+//     float a;
+// public:
+//     CSquare(){}
+//     CSquare(float a){
+//         this->a=a;
+//     }
+//     float GetArea(){
+//         return a*a;
+//     }
+//     void Set(float a){
+//         this->a=a;
+//     }
+// };
+// class Rectangle: public CSquare{
+//     float b;
+// public:
+//     Rectangle():CSquare(){}
+//     Rectangle(float a,float b) : CSquare(a){
+//         this->b=b;
+//     }
+//     void Set(float a,float b){
+//         CSquare::Set(a);
+//         this->b=b;
+//     }
+//     float GetArea(){
+//         return this->a*this->b;
+//     }
+// };
+
+// int main(){ 
+// CSquare A;
+// A.Set(5);
+// cout <<"Dien tich hinh vuong la: "<< A.GetArea();
+// Rectangle B;
+// B.Set(5,6); 
+// cout << "\nDien tich hinh chu nhat la: "<<B.GetArea();
+// }
+
+
+// class Rectangle{
+// protected:
+//     float a,b;
+// public:
+//     Rectangle(){}
+//     Rectangle(float a, float b){
+//         this->a=a;
+//         this->b=b;
+//     }
+//     float GetArea(){
+//         return a*b;
+//     }
+//     void setA(float a){
+//         this->a=a;
+//     }
+//     void setB(float b){
+//         this->b=b;
+//     }
+//     void set(float a ,float b){
+//         this->a=a;
+//         this->b=b;
+//     }
+// };
+// class Square: public Rectangle{
+// public:
+//     Square(float l):Rectangle(l,l){};
+//     void Set(float l){ Rectangle::set(l,l);}
+   
+// };
+
+
+
+// int main(){
+//     Rectangle B;
+//     B.setA(5);
+//     B.setB(15);
+//     cout << B.GetArea()<<"\n";
+//     Square C(5);
+//     cout << C.GetArea();
+// }
+
+
+
+//class Elip{    
+//     float a,b;
+// public:
+//     Elip(float a,float b){
+//         this->a=a;
+//         this->b=b;
+//     }
+//     void Set(float a,float b){
+//         this->a=a;
+//         this->b=b;
+//     }
+//     float GetArea(){
+//         return a*b*3.14;
+//     }
+// };
+
+// class Circle: public Elip{
+//     public:
+//     Circle(float l):Elip(l,l){};
+// };
+// int main(){
+//     Elip E(3,4);
+//     cout << E.GetArea();
+//     Circle C(3);
+//     cout << "\n"<<C.GetArea();
+// }
+
+// class Circle{
+// protected:
+//     float a;
+//     public:
+//     Circle(float a){
+//         this->a=a;
+//     }
+//     float GetArea(){return a*a*3.14;}
+// };
+// class Elip:public Circle{
+//     float b;
+//     public:
+//     Elip(float a,float b):Circle(a){
+//         this->b=b;
+//     }
+//     float GetArea(){
+//         return a*b*3.14;
+//     }
+// };
+
+// int main(){
+//     Circle C(3);
+//     cout << C.GetArea() << endl;
+//     Elip E(3,4);
+//     cout << E.GetArea();;
+// }
