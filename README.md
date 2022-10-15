@@ -1,1 +1,1 @@
-"Hello minh la Gecko"
+"Its all about my freshman assignments"
